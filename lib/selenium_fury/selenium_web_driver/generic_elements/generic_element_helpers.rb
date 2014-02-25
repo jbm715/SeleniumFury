@@ -45,7 +45,7 @@ module GenericElementHelpers
     el.click
   end
 
-  def set(*args)
+  def set(*noop)
     raise NotImplementedError, "#{self.class} does not know how to respond to #set"
   end
 
@@ -102,6 +102,10 @@ module CheckboxElementHelpers
     select unless be_selected == selected?
   end
 
+  def value
+    el['selected'].nil? ? false : true
+  end
+
   alias_method :set, :checked
 end
 
@@ -147,11 +151,33 @@ module ImageElementHelpers
   def source
     el.attribute('src')
   end
+
+  def value(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #value"
+  end
 end
 
 module LinkElementHelpers
   def link
     el.attribute('href')
+  end
+
+  def set(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #set"
+  end
+
+  def value(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #value"
+  end
+end
+
+module SubmitElementHelpers
+  def set(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #set"
+  end
+
+  def value(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #value"
   end
 end
 
@@ -190,13 +216,25 @@ module SelectableElementHelpers
     raise "Locator at #{location} can not be interacted with - Failed with #{exception}"
   end
 
-  def set(noop=true)
+  def set
     select
   end
+
+  alias_method :value, :selected?
 
 end
 
 module TextElementHelpers
+  def set(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #set"
+  end
+
+  def value(*noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #value"
+  end
+end
+
+module TextInputElementHelpers
   def send_keys(text)
     raise "Locator at #{location} can not be interacted with" unless visible?
     el.clear

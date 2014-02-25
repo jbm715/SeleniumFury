@@ -55,10 +55,6 @@ describe PageObject do
       test_page.form_element.visible?.should be_true
     end
 
-    it 'should return the value' do
-      test_page.input_button_element.value.should == 'Click me'
-    end
-
 
     describe '#double_click' do
       it 'should double-click the given element' do
@@ -140,6 +136,19 @@ describe PageObject do
       test_page.input_checkbox_element.selected?.should be_true
     end
 
+    it 'should have #value defined' do
+      expect { test_page.input_checkbox_element.value }.to_not raise_error
+    end
+
+    it 'should retrieve toggled state using #value' do
+      test_page.input_checkbox_element.value.should be_false
+      test_page.input_checkbox_element.set true
+      test_page.input_checkbox_element.value.should be_true
+      test_page.input_checkbox_element.set false
+      test_page.input_checkbox_element.value.should be_false
+
+    end
+
   end
 
 
@@ -209,6 +218,10 @@ describe PageObject do
     it 'should not have #set defined' do
       expect { test_page.input_image_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
     end
+
+    it 'should not have #value defined' do
+      expect { test_page.input_image_element.value }.to raise_exception NotImplementedError, /does not know how to respond to #value$/
+    end
   end
 
 
@@ -218,14 +231,12 @@ describe PageObject do
       test_page.link_element.link.should == 'https://news.ycombinator.com/'
     end
 
-    it 'should have #set defined' do
-      expect { test_page.link_element.set }.to_not raise_error
+    it 'should not have #set defined' do
+      expect { test_page.link_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
     end
 
-    it 'should click a link using the #set method' do
-      link = test_page.link_element.link
-      test_page.link_element.set
-      test_page.send(:driver).current_url.should eql(link)
+    it 'should not have #value defined' do
+      expect { test_page.link_element.value 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #value$/
     end
   end
 
@@ -239,23 +250,35 @@ describe PageObject do
       test_page.input_radio_element.set
       test_page.input_radio_element.selected?.should be_true
     end
+
+    it 'should have #value defined' do
+      expect { test_page.input_radio_element.value }.to_not raise_error
+    end
+
+    it 'should retrieve selected state using #value' do
+      test_page.input_radio_element.value.should be_false
+      test_page.input_radio_element.set
+      test_page.input_radio_element.value.should be_true
+    end
   end
 
   describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::SubmitElement do
-    it 'should have #set defined' do
-      expect { test_page.input_submit_element.set nil }.to_not raise_error
+    it 'should not have #set defined' do
+      expect { test_page.input_submit_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
     end
 
-    it 'should select button using the #set ' do
-      test_page.input_submit_alert_element.set
-      # assert that the action of the button was performed which in this case is an JS alert popup
-      expect { test_page.send(:driver).switch_to.alert }.to_not raise_error, Selenium::WebDriver::Error::NoAlertPresentError
+    it 'should not have #value defined' do
+      expect { test_page.input_submit_element.value }.to raise_exception NotImplementedError, /does not know how to respond to #value$/
     end
   end
 
   describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::TextElement do
     it 'should not have #set defined' do
       expect { test_page.input_message_label_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
+    end
+
+    it 'should not have #value defined' do
+      expect { test_page.input_message_label_element.value }.to raise_exception NotImplementedError, /does not know how to respond to #value$/
     end
   end
 
@@ -264,7 +287,7 @@ describe PageObject do
       expect { test_page.input_message_element.set nil }.to_not raise_error
     end
 
-    it 'should select button using the #set ' do
+    it 'should set text using #set' do
       text = 'blahdsfdsf'
       test_page.input_message_element.set text
       test_page.input_message_element.value.should eql text
@@ -276,11 +299,23 @@ describe PageObject do
       expect { test_page.input_radio_element.set nil }.to_not raise_error
     end
 
-    it 'should select radio using the #set ' do
+    it 'should select radio using #set' do
       test_page.input_radio_element.selected?.should be_false
       test_page.input_radio_element.set
       test_page.input_radio_element.selected?.should be_true
     end
+
+    it 'should have #value defined' do
+      expect { test_page.input_radio_element.value }.to_not raise_error
+    end
+
+    it 'should retrieve selected state using #value' do
+      test_page.input_radio_element.value.should be_false
+      test_page.input_radio_element.set true
+      test_page.input_radio_element.value.should be_true
+
+    end
+
   end
 
 
@@ -321,7 +356,7 @@ describe PageObject do
   end
 
 
-  describe TextElementHelpers do
+  describe TextInputElementHelpers do
 
     it 'should clear and write text' do
       text = 'Hey buddy'

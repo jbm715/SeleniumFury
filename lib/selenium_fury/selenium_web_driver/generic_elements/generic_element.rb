@@ -58,13 +58,15 @@ module SeleniumFury
 
       class SubmitElement < GenericElement
         include SelectableElementHelpers
+        include SubmitElementHelpers
       end
 
       class TextElement < GenericElement
+        include TextElementHelpers
       end
 
       class TextInputElement < GenericElement
-        include TextElementHelpers
+        include TextInputElementHelpers
       end
 
       class SelectableElement < GenericElement
