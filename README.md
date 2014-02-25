@@ -44,6 +44,30 @@ get_page_object(driver,'HomePage')
 validate(HomePage)
 driver.quit
 ```
+
+#Element Types
+=======
+ * GenericElement - any type of element
+ * CheckboxElement - a checkbox
+ * DropDownElement - a dropdown
+ * ImageElement - an image element
+ * LinkElement - an anchor element
+ * RadioButtonElement - a radio button
+ * SubmitElement - buttons
+ * TextElement - an static element that holds text
+ * TextInputElement - a user interactable element
+ * SelectableElement - a generic radio type button
+
+
+Notes on #set and #value
+========
+ * set should only work on elements that can be interacted with
+ * value should only work on elements that can be interacted with
+
+
+
+========
+
  * [Scott Sims](http://scottcsims.com/): Current maintainer.
 
 Copyright
