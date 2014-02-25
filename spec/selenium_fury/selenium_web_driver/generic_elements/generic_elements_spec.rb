@@ -85,6 +85,10 @@ describe PageObject do
       test_page.listings_element.list[0].should be_an Selenium::WebDriver::Element
     end
 
+    it 'should not have #set defined' do
+      expect { test_page.message_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
+    end
+
     describe Selenium::WebDriver::Element
 
     it 'should return the correct value of a method defined in WebDriver::Element, but not GenericElement class' do
@@ -124,6 +128,18 @@ describe PageObject do
       test_page.input_checkbox_element.checked(false)
       test_page.input_checkbox_element.selected?.should be_false
     end
+
+    it 'should have #set defined' do
+      expect { test_page.input_checkbox_element.set true }.to_not raise_error
+    end
+
+    it 'should toggle the checkbox using the #set method' do
+      test_page.input_checkbox_element.set(false)
+      test_page.input_checkbox_element.selected?.should be_false
+      test_page.input_checkbox_element.set(true)
+      test_page.input_checkbox_element.selected?.should be_true
+    end
+
   end
 
 
@@ -166,6 +182,17 @@ describe PageObject do
       test_page.select_element.selected_option_index.should == 1
     end
 
+    it 'should have #set defined' do
+      expect { test_page.select_element.set how: :text, what: 'Saab' }.to_not raise_error
+    end
+
+    it 'should select options using the #set method' do
+      test_page.select_element.set(how: :text, what: 'Saab')
+      test_page.select_element.selected_option_text.should == 'Saab'
+      test_page.select_element.set(how: :value, what: 'mercedes')
+      test_page.select_element.selected_option_text.should == 'Mercedes'
+    end
+
   end
 
 
@@ -178,13 +205,81 @@ describe PageObject do
     it 'should return the source of an image' do
       test_page.input_image_element.attribute('src').include?('test_page/spacer.gif')
     end
+
+    it 'should not have #set defined' do
+      expect { test_page.input_image_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
+    end
   end
 
 
   describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::LinkElement do
 
     it 'should return the link location' do
-      test_page.link_element.link.should == 'http://news.ycombinator.com/'
+      test_page.link_element.link.should == 'https://news.ycombinator.com/'
+    end
+
+    it 'should have #set defined' do
+      expect { test_page.link_element.set }.to_not raise_error
+    end
+
+    it 'should click a link using the #set method' do
+      link = test_page.link_element.link
+      test_page.link_element.set
+      test_page.send(:driver).current_url.should eql(link)
+    end
+  end
+
+  describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::RadioButtonElement do
+    it 'should have #set defined' do
+      expect { test_page.input_radio_element.set nil }.to_not raise_error
+    end
+
+    it 'should select radio using the #set ' do
+      test_page.input_radio_element.selected?.should be_false
+      test_page.input_radio_element.set
+      test_page.input_radio_element.selected?.should be_true
+    end
+  end
+
+  describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::SubmitElement do
+    it 'should have #set defined' do
+      expect { test_page.input_submit_element.set nil }.to_not raise_error
+    end
+
+    it 'should select button using the #set ' do
+      test_page.input_submit_alert_element.set
+      # assert that the action of the button was performed which in this case is an JS alert popup
+      expect { test_page.send(:driver).switch_to.alert }.to_not raise_error, Selenium::WebDriver::Error::NoAlertPresentError
+    end
+  end
+
+  describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::TextElement do
+    it 'should not have #set defined' do
+      expect { test_page.input_message_label_element.set 'blah' }.to raise_exception NotImplementedError, /does not know how to respond to #set$/
+    end
+  end
+
+  describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::TextInputElement do
+    it 'should have #set defined' do
+      expect { test_page.input_message_element.set nil }.to_not raise_error
+    end
+
+    it 'should select button using the #set ' do
+      text = 'blahdsfdsf'
+      test_page.input_message_element.set text
+      test_page.input_message_element.value.should eql text
+    end
+  end
+
+  describe SeleniumFury::SeleniumWebDriver::PageObjectComponents::SelectableElement do
+    it 'should have #set defined' do
+      expect { test_page.input_radio_element.set nil }.to_not raise_error
+    end
+
+    it 'should select radio using the #set ' do
+      test_page.input_radio_element.selected?.should be_false
+      test_page.input_radio_element.set
+      test_page.input_radio_element.selected?.should be_true
     end
   end
 
@@ -222,6 +317,7 @@ describe PageObject do
       expect { wait_element.not_visible.select }.
           to raise_exception(Selenium::WebDriver::Error::TimeOutError)
     end
+
   end
 
 
@@ -238,6 +334,10 @@ describe PageObject do
       new_text = 'Hey buddy'
       test_page.textarea_element.send_keys!(new_text)
       test_page.textarea_element.value.should == existing_text+new_text
+    end
+
+    it 'should have #set defined' do
+      expect { test_page.textarea_element.set 'cow' }.to_not raise_error
     end
   end
 

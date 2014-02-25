@@ -34,13 +34,13 @@ module SeleniumFury
       end
 
       class CheckboxElement < GenericElement
-        include CheckboxElementHelpers
         include SelectableElementHelpers
+        include CheckboxElementHelpers
       end
 
       class DropDownElement < GenericElement
-        include DropDownHelpers
         include SelectableElementHelpers
+        include DropDownHelpers
       end
 
       class ImageElement < GenericElement
@@ -48,8 +48,8 @@ module SeleniumFury
       end
 
       class LinkElement < GenericElement
-        include LinkElementHelpers
         include SelectableElementHelpers
+        include LinkElementHelpers
       end
 
       class RadioButtonElement < GenericElement

@@ -45,6 +45,11 @@ module GenericElementHelpers
     el.click
   end
 
+  def set(noop)
+    raise NotImplementedError, "#{self.class} does not know how to respond to #set"
+  end
+
+
   # Use any methods from WebDriverElement not present
   def method_missing method_sym, *args
     if el.respond_to?(method_sym)
@@ -96,6 +101,8 @@ module CheckboxElementHelpers
   def checked(be_selected=true)
     select unless be_selected == selected?
   end
+
+  alias_method :set, :checked
 end
 
 module DropDownHelpers
@@ -123,6 +130,13 @@ module DropDownHelpers
     el.click if how.nil?
     Selenium::WebDriver::Support::Select.new(el).select_by(how, what)
   end
+
+  # @param opt[:how] [Symbol] strategy to use for selecting an option. :text, :index, :value
+  # @param opt[:what] [String|Fixnum] what to set
+  def set(opt)
+    select_option opt[:how], opt[:what]
+  end
+
 end
 
 module ImageElementHelpers
@@ -175,6 +189,11 @@ module SelectableElementHelpers
   def retry_select(exception)
     raise "Locator at #{location} can not be interacted with - Failed with #{exception}"
   end
+
+  def set(noop=true)
+    select
+  end
+
 end
 
 module TextElementHelpers
@@ -188,4 +207,6 @@ module TextElementHelpers
     raise "Locator at #{location} can not be interacted with" unless visible?
     el.send_keys(text)
   end
+
+  alias_method :set, :send_keys
 end

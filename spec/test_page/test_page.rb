@@ -44,6 +44,7 @@ class TestPage < PageObject
   submit_element        :input_msg_button_element, {id: 'input_msg_button'}
   submit_element        :input_reset_element, {id: 'input_reset'}
   submit_element        :input_submit_element, {id: 'input_submit'}
+  submit_element        :input_submit_alert_element, {id: 'alert_button'}
 
   text_element          :input_message_label_element, {css: 'label'}
 
