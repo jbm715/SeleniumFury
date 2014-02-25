@@ -45,7 +45,7 @@ module GenericElementHelpers
     el.click
   end
 
-  def set(noop)
+  def set(*args)
     raise NotImplementedError, "#{self.class} does not know how to respond to #set"
   end
 
