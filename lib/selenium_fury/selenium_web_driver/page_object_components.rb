@@ -27,6 +27,10 @@ module SeleniumFury
           @elements ||= []
         end
 
+        def populatable_elements
+          @populatable_elements ||= []
+        end
+
         # this is a method on the class now
         # @method element(element_sym, element_hash, opts={})
         # @param element_sym [:Symbol]
@@ -97,6 +101,7 @@ module SeleniumFury
             TextInputElement.new(locator, driver, opt)
           end
           elements << element_sym unless elements.include? element_sym
+          populatable_elements << element_sym unless populatable_elements.include? element_sym
         end
 
         def drop_down_element(element_sym, locator, opt={})
@@ -104,6 +109,7 @@ module SeleniumFury
             DropDownElement.new(locator, driver, opt)
           end
           elements << element_sym unless elements.include? element_sym
+          populatable_elements << element_sym unless populatable_elements.include? element_sym
         end
 
         def submit_element(element_sym, locator, opt={})
@@ -118,6 +124,7 @@ module SeleniumFury
             CheckboxElement.new(locator, driver, opt)
           end
           elements << element_sym unless elements.include? element_sym
+          populatable_elements << element_sym unless populatable_elements.include? element_sym
         end
 
         def image_element(element_sym, locator, opt={})
@@ -132,6 +139,7 @@ module SeleniumFury
             RadioButtonElement.new(locator, driver, opt)
           end
           elements << element_sym unless elements.include? element_sym
+          populatable_elements << element_sym unless populatable_elements.include? element_sym
         end
 
         def selectable_element(element_sym, locator, opt={})
@@ -139,6 +147,7 @@ module SeleniumFury
             SelectableElement.new(locator, driver, opt)
           end
           elements << element_sym unless elements.include? element_sym
+          populatable_elements << element_sym unless populatable_elements.include? element_sym
         end
       end
     end

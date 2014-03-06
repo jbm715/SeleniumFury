@@ -32,5 +32,3 @@ require 'selenium_fury/selenium_web_driver/page_validator'
 require 'selenium_fury/selenium_web_driver/generic_elements/generic_element_helpers'
 require 'selenium_fury/selenium_web_driver/generic_elements/generic_element'
 
-include SeleniumFury::SeleniumWebDriver::PageGenerator
-include SeleniumFury::SeleniumWebDriver::PageValidator
